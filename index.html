@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Realtime Chat</title>
+  <title>Online Counseling</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
@@ -11,17 +11,18 @@
 
   <!-- Font Awesomeのアイコンフォント -->
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
+　
   <!-- 自サイトのCSS -->
   <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
+
   <div class="favorite-template">
     <!-- お気に入り表示用のテンプレート -->
     <li class="list-group-item">
       <div class="media">
-        <img class="mr-3 favorite__user-image" src="img/default-profile-image.png" width="46" height="46" alt="ユーザ画像">
+       
         <div class="media-body">
           <div class="favorite__user-name"></div>
           <div class="favorite__text"></div>
@@ -39,16 +40,15 @@
     <!-- 受信メッセージのテンプレート -->
     <div class="message message--received">
       <div class="message__profile">
-        <img class="message__user-image" src="img/default-profile-image.png" width="46" height="46" alt="プロフィール画像">
+        
       </div>
       <div class="message__body">
         <div class="message__user-name"></div>
         <div class="message__text"></div>
         <div class="message__info">
-          <a href="#" class="message__favorite-link">
-            <i class="message__favorite-icon fa fa-star-o"></i>
-          </a>
+          
           <span class="message__time"></span>
+          
         </div>
       </div>
     </div>
@@ -57,16 +57,12 @@
     <!-- 送信メッセージのテンプレート -->
     <div class="message message--sent">
       <div class="message__profile">
-        <a href="#settingsModal" data-toggle="modal"><img class="message__user-image"
-            src="img/default-profile-image.png" width="46" height="46" alt="プロフィール画像"></a>
+        
       </div>
       <div class="message__body">
         <div class="message__user-name"></div>
         <div class="message__text"></div>
         <div class="message__info">
-          <a href="#" class="message__favorite-link">
-            <i class="message__favorite-icon fa fa-star-o"></i>
-          </a>
           <span class="message__time"></span>
         </div>
       </div>
@@ -154,22 +150,12 @@
               </div>
             </div>
             <div class="form-group row">
-              <div class="col-lg-3">
-                プロフィール画像
-              </div>
+              
               <div class="col-lg-7 mb-2 mb-lg-0">
-                <div class="custom-file">
-                  <input id="settings-profile-image" type="file"
-                    accept=".jpg,.jpeg,.png,.gif, image/jpeg,image/png,image/gif" class="custom-file-input">
-                  <label id="settings-profile-image-label" class="custom-file-label"
-                    for="settings-profile-image">ファイルを選択</label>
-                </div>
+                
               </div>
               <div class="col-lg-2">
-                <label for="settings-profile-image">
-                  <img id="settings-profile-image-preview" src="img/default-profile-image.png" width="46" height="46"
-                    alt="プロフィール画像">
-                </label>
+                
                 <div id="settings-profile-image-loading-container">
                   <i class="settings-profile-image-loading-icon fa fa-refresh" aria-hidden="true"></i>
                 </div>
@@ -214,7 +200,8 @@
     <i class="initial-loading-icon fa fa-refresh" aria-hidden="true"></i>
   </section>
   <!-- /#loading -->
-
+  
+ 
   <!-- ログイン画面 -->
   <section id="login" class="view">
     <div class="container">
@@ -223,7 +210,7 @@
           <form id="login-form">
             <div id="login__email" class="form-group">
               <label for="login-email" class="col-form-label">
-                メールアドレス
+                メールアドレスを入力してください
               </label>
               <div>
                 <input id="login-email" type="email" class="form-control" required>
@@ -231,7 +218,7 @@
             </div>
             <div id="login__password" class="form-group">
               <label for="login-password" class="col-form-label">
-                パスワード
+                パスワードを入力してください
               </label>
               <div>
                 <input id="login-password" type="password" class="form-control" required>
@@ -254,6 +241,8 @@
       </div>
     </div>
   </section>
+  
+　
   <!-- /#login -->
 
   <!-- チャット画面 -->
@@ -262,12 +251,13 @@
     <!-- ナビゲーションバー -->
     <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light py-md-1">
       <div class="container">
+        
 
         <!-- ホームリンク -->
         <a href="./index.html" class="navbar-text" aria-label="ホーム">
           <i class="fa fa-home fa-lg"></i>
         </a>
-
+        
         <!-- 画面幅が狭い時に表示されるハンバーガーメニュー -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -294,13 +284,13 @@
               <a href="#" id="navbarRightDropdown" class="nav-link dropdown-toggle menu-profile py-0"
                 data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <span id="menu-profile-name" class="mr-2"></span>
-                <img id="menu-profile-image" src="img/default-profile-image.png" width="46" height="46" alt="プロフィール画像">
+                
               </a>
               <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="navbarRightDropdown">
                 <a class="dropdown-item room-settings-link" data-toggle="modal" href="#settingsModal">
                   設定
                 </a>
-                <a class="dropdown-item favorites-list-link" data-toggle="modal" href="#favoritesListModal">お気に入り一覧</a>
+                
                 <div role="separator" class="dropdown-divider"></div>
                 <a id="logout__link" href="#" class="dropdown-item">ログアウト</a>
               </div>
@@ -309,6 +299,10 @@
         </div>
       </div>
     </nav>
+    
+  <center>
+  <button onclick="location.href='./index2.html'">ホーム画面に戻る</button>
+  </center>
 
     <!-- メッセージ表示部 -->
     <div id="message-list" class="clearfix"></div>
@@ -345,11 +339,11 @@
   <script>
     // Your web app's Firebase configuration
     const firebaseConfig = {
-      apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      authDomain: "realtime-chat-xxxxx.firebaseapp.com",
-      databaseURL: "https://realtime-chat-xxxxx.firebaseio.com",
-      projectId: 'realtime-chat-xxxx',
-      storageBucket: "realtime-chat-xxxxx.appspot.com",
+      apiKey: "AIzaSyAg7mOwJwtbLik4wwIwwGlqsAUL9H-OJM4",
+      authDomain: "realtime-chat-8b7a1.firebaseapp.com",
+      databaseURL: "https://realtime-chat-8b7a1.firebaseio.com",
+      projectId: "realtime-chat-8b7a1",
+      storageBucket: "realtime-chat-8b7a1.appspot.com",
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -367,6 +361,9 @@
 
   <!-- 自サイトのJavaScript -->
   <script src="js/main.js"></script>
+  
+  
+
 </body>
 
 </html>
