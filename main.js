@@ -96,7 +96,7 @@ const downloadProfileImage = (uid) => {
  * お気に入り関連の関数
  * -----------------
  */
-
+ 
 // favoriteの表示用のdiv（jQueryオブジェクト）を作って返す
 const createFavoriteMessageDiv = (messageId, message) => {
   // HTML内のテンプレートからコピーを作成
@@ -127,11 +127,12 @@ const createFavoriteMessageDiv = (messageId, message) => {
 
   // id属性をセット
   divTag.attr('id', `favorite-message-id-${messageId}`);
-
+  
+  
   return divTag;
 };
 
-// favoriteを表示する
+// favoriteを表示する(メッセージ一覧画面にメッセージデータを表示する)
 const addFavoriteMessage = (messageId, message) => {
   const divTag = createFavoriteMessageDiv(messageId, message);
   divTag.appendTo('#favorite-list');
@@ -146,10 +147,19 @@ const toggleFavorite = (e) => {
   // favorites にデータが存在しているか
   if (dbdata.favorites && dbdata.favorites[messageId]) {
     // TODO: favorites から該当のお気に入り情報を削除
-
+    firebase
+    　.database()
+    　.ref(`favorites/${currentUID}/${messageId}`)
+    　.remove();
   } else {
     // TODO: favorites に該当のメッセージをお気に入りとして追加
-
+    firebase
+      .database()
+      .ref(`favorites/${currentUID}/${messageId}`)
+      .set({
+        message,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+      });
   }
 };
 
@@ -163,7 +173,16 @@ const resetFavoritesListModal = () => {
  * チャット画面関連の関数
  * -------------------
  */
-
+ 
+ // Realtime Database の messages から書籍を削除する
+ const deletemessage = (messageId) => {
+  // TODO: messages から該当の書籍データを削除
+  firebase
+    .database()
+  　.ref("messages/default/-XXXXxxxxxx")
+  　.child(messageId)
+  　.remove()
+  };
 // messageの表示用のdiv（jQueryオブジェクト）を作って返す
 const createMessageDiv = (messageId, message) => {
   // HTML内のテンプレートからコピーを作成
@@ -178,7 +197,7 @@ const createMessageDiv = (messageId, message) => {
 
   const user = dbdata.users[message.uid];
 
-  // ユーザが存在する場合
+  // ���ーザが存在する場合
   if (user) {
     // 投稿者ニックネーム
     divTag
@@ -201,7 +220,13 @@ const createMessageDiv = (messageId, message) => {
 
   // id属性をセット
   divTag.attr('id', `message-id-${messageId}`);
-
+  
+  // 削除ボタンのイベントハンドラを登録
+  const $deleteButton = divTag.find('.message-template .message--sent__delete');
+  $deleteButton.on('click', () => {
+    deletemessage(messageId);
+  });
+ 
   // お気に入りボタンのイベントハンドラを登録
   const mfl = divTag.find('.message__favorite-link');
   mfl.on(
@@ -212,17 +237,55 @@ const createMessageDiv = (messageId, message) => {
     },
     toggleFavorite,
   );
-
-  // TODO: お気に入りONのとき、お気に入りリンクのアイコンを 塗りつぶしあり(fa-star) に設定する
-
-
+　
   return divTag;
 };
 
-// messageを表示する
+// メッセージ一覧画面内のメッセージデータをクリア
+const resetmessageshelfView = () => {
+  $('#message-list').empty();
+};
+
+// messageを表示する(メッセージ一覧画面にメッセージデータを表示する)
 const addMessage = (messageId, message) => {
   const divTag = createMessageDiv(messageId, message);
   divTag.appendTo('#message-list');
+  
+  // 書籍一覧画面の初期化、イベントハンドラ登録処理
+  const loadmessageshelfView = () => {
+  resetmessageshelfView();
+  
+  // メッセージデータを取得
+  const messagesRef = firebase
+    .database()
+    .ref('messages')
+    .orderByChild('createdAt');
+    
+    // 過去に登録したイベントハンドラを削除
+    messagesRef.off('child_removed');
+    messagesRef.off('child_added');
+  
+  // books の child_removedイベントハンドラを登録
+  // （データベースから書籍が削除されたときの処理）
+  messagesRef.on('child_removed', (messageSnapshot) => {
+    const messageId = messageSnapshot.key;
+    const $message = $(`#message-id-${messageId}`);
+    
+    $('.message-template .message--sent__delete').on('click', () => {
+    // ここに、Firebaseからデータを削除するコード(remove())を追加
+    $(`#message-id-${messageId}`).remove();
+  });
+  });//
+  // messages の child_addedイベントハンドラを登録
+  // （データベースに書籍が追加保存されたときの処理）
+  messagesRef.on('child_added', (messageSnapshot) => {
+    const messageId = messageSnapshot.key;
+    const message = messageSnapshot.val();
+
+    // 書籍一覧画面に書籍データを表示する
+    addMessage(messageId, message);
+  });
+};  
 
   // 一番下までスクロール
   $('html, body').scrollTop($(document).height());
@@ -394,7 +457,6 @@ const deleteRoom = (roomName) => {
     .ref(`messages/${roomName}`)
     .remove();
 };
-
 // チャット画面の初期化処理
 const loadChatView = () => {
   resetChatView();
@@ -481,8 +543,13 @@ const loadChatView = () => {
 
     showCurrentRoom();
   });
+  
+   // メッセージ一覧画面の初期化、イベントハンドラ登録処理
+  const loadmessageshelfView = () => {
+  resetmessageshelfView();
 
-  // お気に入りデータを取得
+  
+  // お気に入りデータを取得(// メッセージデータを取得)
   const favoritesRef = firebase
     .database()
     .ref(`favorites/${currentUID}`)
@@ -505,15 +572,16 @@ const loadChatView = () => {
     }
 
     // TODO: 該当するデータをdbdata.favoritesから削除する
+    delete dbdata.favorites[messageId];
+      console.log('dbdata.favoritesプロパティを削除した後：', dbdata.favorites);  
+      
 
-
-    // お気に入り一覧モーダルから該当のお気に入り情報を削除する
+    // お気に入り一覧モーダルから該当のお気に入り情報を削除する(// TODO: メッセージ一覧画面から該当のメッセージデータを削除する)
     $(`#favorite-message-id-${messageId}`).remove();
-
-    // TODO: お気に入りリンクのアイコンを、塗りつぶしなし(fa-star-o) に変更する
-
+    
   });
-
+  
+ 
   /**
    * favorites の child_addedイベントハンドラを登録
    *（お気に入りが追加されたときの処理）
@@ -528,14 +596,16 @@ const loadChatView = () => {
     }
 
     // TODO: dbdata.favoritesに登録する
-
+    dbdata.favorites[messageId] = favorite;
+    console.log(dbdata.favorites); // {aaa: "テスト"}
 
     // お気に入り一覧モーダルを更新する
-    addFavoriteMessage(messageId, favorite.message);
+     addFavoriteMessage(messageId, favorite.message);
 
-    // TODO: お気に入りリンクのアイコンを、塗りつぶしあり(fa-star) に変更する
-
+   
   });
+};
+  
 };
 
 /**
