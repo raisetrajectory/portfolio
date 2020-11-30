@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/**
+ * ---------------
+ * navbarのメニュー
+ * ---------------
+ */
+.important {
+  padding: 1rem 2rem;
+  color: #0000FF;
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear, left top, right top, from(#f83600), to(#f9d423));
+  background-image: -webkit-linear-gradient(left, #f83600 0%, #f9d423 100%);
+  background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+}
+.important3 {
+	color:#FF9900;
+	font-family: serif;
+}
+
+
+
+h2:before {
+  font-size: 15px;
+  font-size: 1.5rem;
+  position: absolute;
+  top: -24px;
+  left: 0;
+  height: 24px;
+  padding: 0 1em;
+  content: '\POINT';
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+  background: #22ac38;
+}
+
+ul, ol {
+  color: #FF9900; 
+  border: double 5px #668ad8;/*二重線 太さ 色*/
+  background: #f1f8ff; 
+  padding: 0.5em 0.5em 0.5em 2em;
+}
+
+ul li, ol li {
+  line-height: 1.5;
+  padding: 0.5em 0;
+}
+body {
+  background-color:#FFFFFF;
+}
+/* リストの各項目 */
+ul.cp_list {
+	padding: 0.5em;
+	list-style: none;
+	
+
+	 
+}
+ul.cp_list li {
+	position: relative;
+	padding: 0.5em 1em 0.5em 2.3em;
+	margin-bottom:5px;
+	border-bottom: 1px solid rgba(255,143,0,1);
+}
+ul.cp_list li:after,
+ul.cp_list li:before {
+	content:'';
+	position: absolute;
+	transform: rotate(45deg);
+}
+ul.cp_list li:before {
+	top: 0.7em;
+	left: 0.2em;
+	width: 12px;
+	height: 12px;
+	border:2px solid rgba(255,143,0,1);
+}
+ul.cp_list li:after {
+	top: 0.9em;
+	left: 0.7em;
+	width: 14px;
+	height: 14px;
+	background: rgba(255,143,0,0.5);
+	transform: rotate(60deg);
+}
+
+/* ドロップダウンの各項目 */
+.dropdown-menu li a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all 0.1s;
+}
+
+/* 画面右上角の自分のプロフィール画像を上下中央に */
+.navbar-nav > li > a.menu-profile {
+  padding-top: 2px;
+  padding-bottom: 0;
+}
+
+/* すべての画面を最初は表示しない */
+.view {
+  display: none;
+}
+
